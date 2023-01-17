@@ -69,9 +69,11 @@
                             </div>
                         </div>
                         <a href="./cart.html" class="widget-header pl-3 ml-3">
-                            <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i>
-                            </div>
-                            <span class="badge badge-pill badge-danger notify">0</span>
+                            <a href="{% url 'cart' %}">
+                                <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i>
+                                </div>
+                            </a>
+                            <span class="badge badge-pill badge-danger notify">{{cart_count}}</span>
                         </a>
                     </div> <!-- widgets-wrap.// -->
                 </div> <!-- col.// -->
