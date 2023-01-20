@@ -66,8 +66,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "category.context_processors.menu_links",
-                "carts.context_processors.counter",
+                "category.context_processors.menu_links",  # Added Manually
+                "carts.context_processors.counter",  # Added Manually
             ],
         },
     },
@@ -131,12 +131,12 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Added Manually
-
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [
     "greatkartProject/static",
 ]
 
+# Added Manually
 # Media Files Configuration
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
