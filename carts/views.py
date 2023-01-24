@@ -3,6 +3,7 @@ from store.models import Product, Variation
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -129,7 +130,9 @@ def cart(request, total=0, quantity=0, cart_items=None):
         if grand_total <= 1000 and grand_total > 0:
             delivery_charge = 40
     except ObjectDoesNotExist:
-        pass
+        delivery_charge = 0
+        tax = 0
+        grand_total = 0
 
     context = {
         "total": total,

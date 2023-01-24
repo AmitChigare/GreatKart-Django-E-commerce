@@ -4,6 +4,7 @@
 
 <section class="section-content padding-y bg">
     <div class="container">
+        <!-- {% include 'alerts.html' %} -->
 
         <!-- ============================ COMPONENT 1 ================================= -->
         <div class="card">
@@ -53,16 +54,13 @@
                             <hr>
                             {% if single_product.stock <= 0 %} <h6 class='text-warning'>Out of stock</h6>
                                 {% else %}
-                                {% if in_cart %}
-                                <button class="btn btn-success"> <span class="text">Added to Cart</span>
-                                    <i class="fas fa-check"></i> </button>
-                                <a href="{% url 'cart' %}" class="btn btn-outline-primary"> <span class="text">View
-                                        Cart</span>
-                                    <i class="fas fa-eye"></i> </a>
-                                {% else %}
                                 <button type="submit" class="btn btn-primary"> <span class="text">Add to
                                         cart</span>
                                     <i class="fas fa-shopping-cart"></i> </button>
+                                {% if in_cart %}
+                                <a href="{% url 'cart' %}" class="btn btn-outline-primary"> <span class="text">View in
+                                        Cart</span>
+                                    <i class="fas fa-eye"></i> </a>
                                 {% endif %}
                                 {% endif %}
                         </article> <!-- product-info-aside .// -->

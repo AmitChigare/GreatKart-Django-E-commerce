@@ -1,0 +1,15 @@
+{% if messages %}
+<ul class="messages customMessage">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %} style="padding-top: 10px;">
+        <div class="m-0 alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" data-mdb-delay="3000"
+                style="padding: 0.65rem 1.25rem;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        </li>
+        {% endfor %}
+</ul>
+{% endif %}
