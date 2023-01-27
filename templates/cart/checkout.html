@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+        <div class="row">
+            <aside class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Billing address</h4>
+                        <form action="" method="POST">
+                            {%csrf_token%}
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label>First name*</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="first_name"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Last name*</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="last_name"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Phone*</label>
+                                    <input type="text" value="+91 " class="form-control" name="phone" required>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Email*</label>
+                                    <input type="email" placeholder="example@gmail.com" class="form-control"
+                                        name="email" required>
+                                </div>
+                            </div> <!-- row.// -->
+                            <div class="row">
+                                <div class="form-group col-sm-4">
+                                    <label>Country*</label>
+                                    <select name="country" class="form-control" required>
+                                        <option disabled value="">Choose</option>
+                                        <option value="">India</option>
+                                        <option value="">United States</option>
+                                        <option value="">France</option>
+                                        <option value="">Italy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>State*</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="state"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Postal code*</label>
+                                    <input type="number" placeholder="" class="form-control" name="postal_code"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label>Address Line*</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="address_line"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Building*</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="building"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Zip</label>
+                                    <input type="text" placeholder="" class="form-control" name="zip">
+                                </div>
+                            </div> <!-- row.// -->
+                            <!-- <button class="btn btn-primary">Save</button> -->
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+            <aside class="col-lg-6">
+                <table class="table table-borderless table-shopping-cart">
+                    <thead class="text-muted">
+                        <tr class="small text-uppercase">
+                            <th scope="col">Product</th>
+                            <th scope="col" width="120">Quantity</th>
+                            <th scope="col" width="120">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_item in cart_items %}
+                        <tr>
+                            <td>
+                                <figure class="itemside align-items-center">
+                                    <a href="{{cart_item.product.get_url}}">
+                                        <div class="aside"><img src="{{cart_item.product.photos.url}}" class="img-sm">
+                                        </div>
+                                    </a>
+                                    <figcaption class="info">
+                                        <a href="{{cart_item.product.get_url}}"
+                                            class="title text-dark">{{cart_item.product.product_name}}</a>
+                                        <p class="text-muted small">
+                                            {% if cart_item.variations.all %}
+                                            {% for item in cart_item.variations.all %}
+                                            {{ item.variation_category | capfirst }} : {{ item.variation_value }}
+                                            <br>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </td>
+                            <td>
+                                <!-- col.// -->
+                                <div class="col">
+                                    <div class="input-group input-spinner">
+                                        <!-- <div class="input-group-prepend">
+                                            <a href="{% url 'remove_cart' cart_item.product.id cart_item.id  %}"
+                                                class="btn btn-light" type="button" id="button-plus"> <i
+                                                    class="fa fa-minus"></i> </a>
+                                        </div> -->
+                                        <!-- <label for="">{{cart_item.quantity}}</label> -->
+                                        <input type="text" class="form-control" value="{{cart_item.quantity}}" disabled>
+                                        <!-- <div class="input-group-append">
+                                            <form action="{% url 'add_cart' cart_item.product.id %}" method="POST">
+                                                {% csrf_token %}
+                                                {% for item in cart_item.variations.all %}
+                                                <input type="hidden" name="{{item.variation_category | lower}}"
+                                                    value="{{item.variation_value | capfirst}}">
+                                                {% endfor %}
+                                                <button type="submit" class="btn btn-light" type="button"
+                                                    id="button-minus"> <i class="fa fa-plus"></i> </button>
+                                            </form>
+                                        </div> -->
+                                    </div> <!-- input-group.// -->
+                                </div> <!-- col.// -->
+                            </td>
+                            <td>
+                                <div class="price-wrap">
+                                    <var class="price">₹ {{cart_item.sub_total}}</var>
+                                    <small class="text-muted">₹ {{cart_item.product.price}} each </small>
+                                </div> <!-- price-wrap .// -->
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right">₹{{total}}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Tax(5%):</dt>
+                            <dd class="text-right"> ₹{{tax}}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Delivery Charge:</dt>
+                            <dd class="text-right"> ₹{{delivery_charge}}</dd>
+                        </dl> -->
+                        <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right">₹{{total}}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Tax(5%):</dt>
+                            <dd class="text-right"> ₹{{tax}}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Delivery Charge:</dt>
+                            <dd class="text-right"> ₹{{delivery_charge}}</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Total:</dt>
+                            <dd class="text-right text-dark b"><strong>₹{{grand_total}}</strong></dd>
+                        </dl>
+                        <p style="font-size: 12px; color: orange;">
+                            Free shiping on orders above 1000/-
+                        </p>
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="{% static './images/misc/payments.png' %}" height="26">
+                        </p>
+                        <button type="submit" class="btn btn-success btn-block"> Place order </button>
+                        <a href="{% url 'store' %}" class="btn btn-light btn-block"><i
+                                class="fas fa-angle-double-left"></i> Go
+                            to cart</a>
+                    </div> <!-- card-body.// -->
+                    </form>
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+
+
+        </div> <!-- row.// -->
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock content %}

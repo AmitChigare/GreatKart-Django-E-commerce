@@ -6,22 +6,23 @@
 <section class="section-conten padding-y" style="min-height:84vh">
     {% if request.GET.command == 'verification' %}
     <div class="container alert-info text-center w-50 p-5">A link has been sent to {{request.GET.email}}. Please click
-        on
-        the
-        link to
-        Activate your account. <br><br>Already Verified? <a href="{% url 'login' %}">Click to Login</a></div>
+        on the link to Activate your account. <br><br>Already Verified? <a href="{% url 'login' %}">Click to Login</a>
+    </div>
     {% else %}
-    <!-- ============================ COMPONENT LOGIN   ================================= -->
+    <!-- ============================ COMPONENT LOGIN ================================= -->
+    {% if user.id %}
+    <h1 style="text-align: center;">You are already logged in</h1>
+    {% else %}
     <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
         <div class="card-body">
             <h4 class="card-title mb-4">Sign in</h4>
             <form action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Email Address" name="email">
+                    <input type="email" class="form-control" placeholder="Email Address" name="email" required>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
                 </div> <!-- form-group// -->
 
                 <div class="form-group">
@@ -31,12 +32,15 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Login </button>
                 </div> <!-- form-group// -->
+                <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+
             </form>
         </div> <!-- card-body.// -->
     </div> <!-- card .// -->
+    {% endif %}
 
-    <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
-    <br><br>
+    <!-- <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+    <br><br> -->
     <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
     {%endif%}
 

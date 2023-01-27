@@ -99,26 +99,18 @@
                     <div class="card-body">
                         <dl class="dlist-align">
                             <dt>Total price:</dt>
-                            <dd class="text-right">₹{{total}}</dd>
+                            <dd class="text-right"><strong>₹{{total}}</strong></dd>
                         </dl>
-                        <dl class="dlist-align">
-                            <dt>Tax(5%):</dt>
-                            <dd class="text-right"> ₹{{tax}}</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Delivery Charge:</dt>
-                            <dd class="text-right"> ₹{{delivery_charge}}</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Total:</dt>
-                            <dd class="text-right text-dark b"><strong>₹{{grand_total}}</strong></dd>
-                        </dl>
+                        <p style="font-size: 10px; color: orange;">
+                            Free shiping on orders above 1000/-
+                        </p>
                         <hr>
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
-                        <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                        <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
+                        <a href="{% url 'store' %}" class="btn btn-light btn-block"><i class="fas fa-shopping-cart"></i>
+                            </button> Continue Shopping</a>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
 
