@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Review Order{% endblock title %}
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+        <div class="row">
+            <aside class="col-lg-8">
+                <div class="card">
+                    <h5 class="card-header">Billing Address</h5>
+                    <div class="card-body">
+                        <p class="card-text m-0">{{order.full_name}}</p>
+                        <p class="card-text m-0">{{order.full_address}}</p>
+                        <p class="card-text m-0">{{order.state}}, {{order.city}}</p>
+                        <p class="card-text m-0">{{order.postal_code}}</p>
+                        <p class="card-text m-0">{{order.phone}}</p>
+                        <p class="card-text m-0">{{order.country}}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <h5 class="card-header">Payment</h5>
+                    <div class="card-body">
+                        Paypal
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <h5 class="card-header">Order Review</h5>
+                    <div class="card-body">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Product</th>
+                                    <th scope="col" width="120">Quantity</th>
+                                    <th scope="col" width="120">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <a href="{{cart_item.product.get_url}}">
+                                                <div class="aside"><img src="{{cart_item.product.photos.url}}"
+                                                        class="img-sm">
+                                                </div>
+                                            </a>
+                                            <figcaption class="info">
+                                                <a href="{{cart_item.product.get_url}}"
+                                                    class="title text-dark">{{cart_item.product.product_name}}</a>
+                                                <p class="text-muted small">
+                                                    {% if cart_item.variations.all %}
+                                                    {% for item in cart_item.variations.all %}
+                                                    {{ item.variation_category | capfirst }} : {{ item.variation_value
+                                                    }}
+                                                    <br>
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <!-- col.// -->
+                                        <div class="col">
+                                            <div class="input-group input-spinner">
+                                                <!-- <div class="input-group-prepend">
+                                                    <a href="{% url 'remove_cart' cart_item.product.id cart_item.id  %}"
+                                                        class="btn btn-light" type="button" id="button-plus"> <i
+                                                            class="fa fa-minus"></i> </a>
+                                                </div> -->
+                                                <!-- <label for="">{{cart_item.quantity}}</label> -->
+                                                <input type="text" class="form-control" value="{{cart_item.quantity}}"
+                                                    disabled>
+                                                <!-- <div class="input-group-append">
+                                                    <form action="{% url 'add_cart' cart_item.product.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        {% for item in cart_item.variations.all %}
+                                                        <input type="hidden" name="{{item.variation_category | lower}}"
+                                                            value="{{item.variation_value | capfirst}}">
+                                                        {% endfor %}
+                                                        <button type="submit" class="btn btn-light" type="button"
+                                                            id="button-minus"> <i class="fa fa-plus"></i> </button>
+                                                    </form>
+                                                </div> -->
+                                            </div> <!-- input-group.// -->
+                                        </div> <!-- col.// -->
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">₹ {{cart_item.sub_total}}</var>
+                                            <small class="text-muted">₹ {{cart_item.product.price}} each </small>
+                                        </div> <!-- price-wrap .// -->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </aside> <!-- col.// -->
+            <aside class="col-lg-4">
+
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right"><strong>₹{{total}}</strong></dd>
+                        </dl>
+                        <p style="font-size: 10px; color: orange;">
+                            Free shiping on orders above 1000/-
+                        </p>
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="{% static './images/misc/payments.png' %}" height="26">
+                        </p>
+                        <!-- <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Make payment </a> -->
+                        <!-- Paypal Payment Button -->
+                        <div id="paypal-button-container"></div>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+
+
+        </div> <!-- row.// -->
+
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+
+<script>
+    // Render the PayPal button into #paypal-button-container
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie("csrftoken");
+    var orderID = "{{order.order_number}}";
+    var amount = "{{total}}";
+    var url = "{% url 'payments' %}";
+    var payment_method = 'Paypal';
+    var redirect_url = "{% url 'order_complete' %}"
+    // const url = {% url 'payments' %};
+    // const order_ID = {{ order.order_number }};
+    // const payment_method = 'Paypal';
+    // const csrftoken = '';
+
+    paypal.Buttons({
+        // Sets up the transaction when a payment button is clicked
+        style: {
+            'color': 'blue',
+            'shape': 'rect',
+            'label': 'pay',
+            'height': 35,
+        },
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount // Can also reference a variable or function
+                    }
+                }]
+            });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(function (orderData) {
+                console.log(orderData)
+                // Successful capture! For dev/demo purposes:
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                const transaction = orderData.purchase_units[0].payments.captures[0];
+                sendData()
+                function sendData() {
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                            "X-CSRFToken": csrftoken,
+                        },
+                        body: JSON.stringify({
+                            orderID: orderID,
+                            transID: orderData.id,
+                            status: orderData.status,
+                            payment_method: payment_method,
+                            amount_paid: amount,
+                        }),
+                    }).then((response) => response.json()).then((data) => window.location.href = redirect_url + '?order_number=' + data.order_number + '&payment_id=' + data.transId);
+
+                }
+
+                alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                // When ready to go live, remove the alert and show a success message within this page. For example:
+                // const element = document.getElementById('paypal-button-container');
+                // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                // Or go to another URL:  actions.redirect('thank_you.html');
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock content %}

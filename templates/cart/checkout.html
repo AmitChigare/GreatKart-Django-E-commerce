@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Cart{% endblock title %}
+{% block title %}Order Details{% endblock title %}
 {% block content %}
 <section class="section-content padding-y bg">
     <div class="container">
@@ -11,18 +11,18 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Billing address</h4>
-                        <form action="" method="POST">
+                        <form action="{% url 'place_order' %}" method="POST">
                             {%csrf_token%}
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label>First name*</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="first_name"
-                                        required>
+                                    <input type="text" placeholder="Your First name" class="form-control"
+                                        value="{{user.first_name}}" name="first_name" required>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Last name*</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="last_name"
-                                        required>
+                                    <input type="text" placeholder="Your Last name" class="form-control"
+                                        value="{{user.last_name}}" name="last_name" required>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Phone*</label>
@@ -31,43 +31,45 @@
                                 <div class="form-group col-sm-6">
                                     <label>Email*</label>
                                     <input type="email" placeholder="example@gmail.com" class="form-control"
-                                        name="email" required>
+                                        name="email" required value="{{user.email}}">
                                 </div>
                             </div> <!-- row.// -->
                             <div class="row">
                                 <div class="form-group col-sm-4">
                                     <label>Country*</label>
-                                    <select name="country" class="form-control" required>
+                                    <input type="text" placeholder="" class="form-control" name="country" required>
+                                    <!-- <select name="country" class="form-control" required>
                                         <option disabled value="">Choose</option>
                                         <option value="">India</option>
                                         <option value="">United States</option>
                                         <option value="">France</option>
                                         <option value="">Italy</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label>State*</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="state"
+                                    <input type="text" placeholder="Your State" class="form-control" name="state"
+                                        required>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>City*</label>
+                                    <input type="text" placeholder="City" class="form-control" name="city" required>
+                                </div>
+                                <div class="form-group col-sm-8">
+                                    <label>Address Line*</label>
+                                    <input type="text" placeholder="xx, yy ,zz" class="form-control" name="address_line"
                                         required>
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label>Postal code*</label>
-                                    <input type="number" placeholder="" class="form-control" name="postal_code"
-                                        required>
+                                    <input type="number" placeholder="000000" class="form-control" name="postal_code"
+                                        required value="000000">
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    <label>Address Line*</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="address_line"
-                                        required>
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label>Building*</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="building"
-                                        required>
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label>Zip</label>
-                                    <input type="text" placeholder="" class="form-control" name="zip">
+                                    <label>Order Note</label>
+                                    <textarea rows="4"
+                                        placeholder="Like: Whether to deliever at doorstep or timing of delievery, etc."
+                                        class="form-control" name="order_note"></textarea>
                                 </div>
                             </div> <!-- row.// -->
                             <!-- <button class="btn btn-primary">Save</button> -->
@@ -180,7 +182,7 @@
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
                         <button type="submit" class="btn btn-success btn-block"> Place order </button>
-                        <a href="{% url 'store' %}" class="btn btn-light btn-block"><i
+                        <a href="{% url 'cart' %}" class="btn btn-light btn-block"><i
                                 class="fas fa-angle-double-left"></i> Go
                             to cart</a>
                     </div> <!-- card-body.// -->
@@ -195,5 +197,7 @@
 
     </div> <!-- container .//  -->
 </section>
+
+
 <!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock content %}

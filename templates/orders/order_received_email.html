@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{user.first_name}},
+
+Your order has been received by us. We will soon ship your order and send tracking link.
+Order Number: {{order.order_number}}
+Total price: {{order.order_total}}
+
+
+{% endautoescape %}

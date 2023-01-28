@@ -9,7 +9,7 @@ zGreatKart Images
 zgreatkart_template
 # Backup files # 
 *.bak 
-
+orderEXECEL.xlsx
 # If you are using PyCharm # 
 # User-specific stuff
 .idea/**/workspace.xml
