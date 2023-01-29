@@ -29,7 +29,7 @@ class OrderAdmin(admin.ModelAdmin):
         "is_ordered",
         "created_at",
     ]
-    list_filter = ["status", "is_ordered"]
+    list_filter = ["status", "is_ordered", "email"]
     search_fields = [
         "order_number",
         "full_name",

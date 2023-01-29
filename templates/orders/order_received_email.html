@@ -1,9 +1,13 @@
 {% autoescape off %}
 Hi {{user.first_name}},
 
-Your order has been received by us. We will soon ship your order and send tracking link.
+<!-- <div style="padding: 20px;border-bottom: 2px solid black;"> -->
+Your order has been received by us. We will ship your order soon.
 Order Number: {{order.order_number}}
 Total price: {{order.order_total}}
+<!-- </div> -->
+<!-- <button class="btn btn-primary"><a href="{% url 'home' %}">Go to Greatkart</a></button> -->
+<!-- <p>This email was sent from an email address that can't receive emails. Please don't reply to this email.</p> -->
 
 
 {% endautoescape %}
